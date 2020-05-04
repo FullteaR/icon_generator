@@ -1,0 +1,7 @@
+photos/
+movies/
+input/
+prepare/
+output/
+\.ipynb_checkpoints/
+output.json
