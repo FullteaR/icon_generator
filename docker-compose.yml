@@ -1,0 +1,15 @@
+version: '2.3'
+services:
+        icon:
+                build:
+                        context: ./
+                image: frt/icon
+                container_name: icon
+                ports:
+                        - 127.0.0.1:11112:8888
+                volumes:  
+                        - .:/mnt
+                runtime: nvidia
+                environment:
+                        - NVIDIA_VISIBLE_DEVICES=all
+                        - NVIDIA_DRIVER_CAPABILITIES=all
