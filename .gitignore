@@ -5,3 +5,5 @@ prepare/
 output/
 \.ipynb_checkpoints/
 output.json
+models/
+__pycache__/
