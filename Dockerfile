@@ -20,7 +20,7 @@ RUN rm -rf ~/.pyenv
 ENV PATH $PATH:$PYTHON_ROOT/bin
 
 RUN pip install --upgrade setuptools pip
-RUN pip install numpy tensorflow-gpu==2.1.0 tensorflow_hub keras
+RUN pip install numpy tensorflow-gpu==2.1.0 tensorflow_hub keras==2.3.1
 RUN pip install scikit-image opencv-python seaborn matplotlib tqdm jupyter pandas xgboost sklearn pyarrow
 
 RUN pip install -U git+https://github.com/qubvel/efficientnet
