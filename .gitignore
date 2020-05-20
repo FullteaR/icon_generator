@@ -1,10 +1,9 @@
-photos/
-movies/
 input/
-prepare/
+faces/
 output/
 \.ipynb_checkpoints/
 output.json
 models/
 __pycache__/
-slices/
+*.zip
+tmp-*/
