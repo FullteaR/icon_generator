@@ -9,8 +9,32 @@ ARG JUPYTER_PW_HASH="sha1:6bc3f9f9b8c8:465b161136af835d4d26a64918457d2f6a2fdea4"
 
 RUN apt update
 
-RUN apt install -y sudo wget git curl build-essential vim htop ruby ffmpeg
-RUN apt install -y libmagickwand-dev libreadline-dev libncursesw5-dev libssl-dev libsqlite3-dev libgdbm-dev libbz2-dev openjdk-11-jdk liblzma-dev zlib1g-dev uuid-dev libffi-dev libdb-dev libglib2.0-0 libsm6 libxrender1 libxext6
+RUN apt install -y\
+ sudo\
+ wget\
+ git\
+ curl\
+ build-essential\
+ ruby\
+ ffmpeg
+RUN apt install -y\
+ libmagickwand-dev\
+ libreadline-dev\
+ libncursesw5-dev\
+ libssl-dev\
+ libsqlite3-dev\
+ libgdbm-dev\
+ libbz2-dev\
+ openjdk-11-jdk\
+ liblzma-dev\
+ zlib1g-dev\
+ uuid-dev\
+ libffi-dev\
+ libdb-dev\
+ libglib2.0-0\
+ libsm6\
+ libxrender1\
+ libxext6
 
 
 #INSTALL PYTHON (use install support tool, which is a part of pyenv)
@@ -21,7 +45,22 @@ ENV PATH $PATH:$PYTHON_ROOT/bin
 
 RUN pip install --upgrade setuptools pip
 RUN pip install numpy tensorflow-gpu==2.1.0 tensorflow_hub keras==2.3.1
-RUN pip install scikit-image opencv-python seaborn matplotlib tqdm jupyter pandas xgboost sklearn pyarrow
+RUN pip install\
+ numpy\
+ tensorflow-gpu==2.1.0\
+ tensorflow_hub\
+ keras==2.3.1
+ scikit-image\
+ opencv-python\
+ seaborn\
+ matplotlib\
+ tqdm\
+ jupyter\
+ pandas\
+ xgboost\
+ sklearn\
+ pyarrow\
+ timeout_decorator
 
 RUN pip install -U git+https://github.com/qubvel/efficientnet
 
