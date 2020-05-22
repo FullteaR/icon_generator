@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import tensorflow as tf
-from keras.layers import Lambda, LeakyReLU, Conv2D 
-from keras.models import Sequential
+from tensorflow.keras.layers import Lambda, LeakyReLU, Conv2D 
+from tensorflow.keras.models import Sequential
 import numpy as np
 def SubpixelConv2D(input_shape, scale=2):
 

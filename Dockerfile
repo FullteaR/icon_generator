@@ -34,7 +34,8 @@ RUN apt install -y\
  libglib2.0-0\
  libsm6\
  libxrender1\
- libxext6
+ libxext6\
+ graphviz
 
 
 #INSTALL PYTHON (use install support tool, which is a part of pyenv)
@@ -60,7 +61,8 @@ RUN pip install\
  xgboost\
  sklearn\
  pyarrow\
- timeout_decorator
+ timeout_decorator\
+ pydot
 
 RUN pip install -U git+https://github.com/qubvel/efficientnet
 
