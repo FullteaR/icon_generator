@@ -30,13 +30,16 @@ def visualize(g,d=None,epoch=None, row=4, col=5):
     pred = g.predict(noise, verbose=0)
     if d:
         losses = d.predict(pred)
+        if type(losses)==list:
+            losses = np.asarray(losses)
+            losses = np.mean(losses,axis=0)
     if epoch:
         plt.suptitle("epoch={0}".format(epoch),fontsize=15)
     for i in range(row * col):
         plt.subplot(row, col, i+1)
         plt.imshow((pred[i]*127.5+127.5).astype(np.uint8))
         if d:
-            plt.title(losses[i][0])
+            plt.title(np.mean(losses[i]))
         plt.axis('off')
     plt.show()
 
