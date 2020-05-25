@@ -23,18 +23,20 @@ def ResBlock(layer_input, out_channel):
     # d = LeakyReLU(alpha=0.2)(d)
     return d
 
-def visualize(g,d,epoch=None, row=4, col=5):
+def visualize(g,d=None,epoch=None, row=4, col=5):
     noise_length = g.layers[0].input.shape[1]
     plt.figure(figsize=(col*3,row*3))
     noise = np.random.uniform(-1, 1, size=(row*col, noise_length))
     pred = g.predict(noise, verbose=0)
-    losses = d.predict(pred)
+    if d:
+        losses = d.predict(pred)
     if epoch:
         plt.suptitle("epoch={0}".format(epoch),fontsize=15)
     for i in range(row * col):
         plt.subplot(row, col, i+1)
         plt.imshow((pred[i]*127.5+127.5).astype(np.uint8))
-        plt.title(losses[i][0])
+        if d:
+            plt.title(losses[i][0])
         plt.axis('off')
     plt.show()
 
