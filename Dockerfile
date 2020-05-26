@@ -50,7 +50,7 @@ RUN pip install\
  numpy\
  tensorflow-gpu==2.1.0\
  tensorflow_hub\
- keras==2.3.1
+ keras==2.3.1\
  scikit-image\
  opencv-python\
  seaborn\
