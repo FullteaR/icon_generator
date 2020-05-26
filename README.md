@@ -1,6 +1,9 @@
 # icon_generator
 This is an automated animator for drawing anime/manga face.
 
+## Generated Images
+
+![generated_images](https://github.com/FullteaOfEEIC/icon_generator/blob/master/sample.png)
 
 ## Installation and Usage
 
