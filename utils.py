@@ -79,7 +79,7 @@ def check(img):
     return likelihood
 
 
-def create(generator, size=None):
+def create(generator, likelihood=0.999, size=None):
     noise_length = generator.layers[0].input.shape[1]
     while True:
         noise = np.random.uniform(-1, 1, size=(1, noise_length))
@@ -88,7 +88,7 @@ def create(generator, size=None):
         img[img > 255] = 255
         img[img < 0] = 0
         img = img.astype(np.uint8)
-        if check(img) < 0.999:
+        if check(img) < likelihood:
             continue
         if size:
             img = cv2.resize(img, size)
