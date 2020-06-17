@@ -50,9 +50,9 @@ def visualize(g, d=None, epoch=None, row=4, col=5, save=None):
         if d:
             plt.title(np.mean(losses[i]))
         plt.axis('off')
-    plt.show()
     if save:
         plt.savefig(save)
+    plt.show()
     return noise
 
 
