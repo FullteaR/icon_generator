@@ -32,7 +32,7 @@ def ResBlock(layer_input, out_channel):
     return d
 
 
-def visualize(g, d=None, epoch=None, row=4, col=5):
+def visualize(g, d=None, epoch=None, row=4, col=5, save=None):
     noise_length = g.layers[0].input.shape[1]
     plt.figure(figsize=(col * 3, row * 3))
     noise = np.random.uniform(-1, 1, size=(row * col, noise_length))
@@ -51,6 +51,8 @@ def visualize(g, d=None, epoch=None, row=4, col=5):
             plt.title(np.mean(losses[i]))
         plt.axis('off')
     plt.show()
+    if save:
+        plt.savefig(save)
     return noise
 
 
