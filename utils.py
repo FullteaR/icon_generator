@@ -1,7 +1,8 @@
 import matplotlib.pyplot as plt
 import tensorflow as tf
-from tensorflow.keras.layers import Lambda, LeakyReLU, Conv2D
-from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Lambda, LeakyReLU, Conv2D, Input, Layer, Dense, Reshape, GaussianNoise
+from tensorflow.keras.models import Sequential, Model
+from tensorflow.keras.backend import int_shape, ones
 import numpy as np
 import os
 import uuid
@@ -55,13 +56,21 @@ def visualize(g, d=None, epoch=None, row=4, col=5, save=None):
     plt.show()
     return noise
 
-
 def Combined_model(g, d):
-    model = Sequential()
-    model.add(g)
-    model.add(d)
-    return model
+    noise_length = g.layers[0].input.shape[1]
+    inputs = Input((noise_length,))
+    x = g(inputs)
+    outputs = d(x)
+    return Model(inputs=inputs, outputs=outputs)
 
+
+def Combined_model2(g, d):
+    noise_length = g.layers[0].input.shape[1]
+    inputs = Input((noise_length,))
+    inputs2 = Input((1,))
+    x = g([inputs, inputs2])
+    outputs = d(x)
+    return Model(inputs=[inputs,inputs], outputs=outputs)
 
 def check(img):
     likelihood = 0
@@ -96,3 +105,44 @@ def create(generator, likelihood=0.999, size=None):
             img = cv2.resize(img, size)
         img = cv2.bilateralFilter(img, 5, 35, 35)
         return img
+    
+    
+#https://github.com/penny4860/keras-adain-style-transfer
+class AdaIN(Layer):
+    def __init__(self, alpha=1.0, **kwargs):
+        self.alpha = alpha
+        super(AdaIN, self).__init__(**kwargs)
+
+    def compute_output_shape(self, input_shape):
+        assert isinstance(input_shape, list)
+        assert input_shape[0] == input_shape[1]
+        return input_shape[0]
+    
+    def get_config(self):
+
+        config = super().get_config().copy()
+        config.update({
+            'alpha': self.alpha
+        })
+        return config
+
+    def call(self, x):
+        assert isinstance(x, list)
+        # Todo : args
+        content_features, style_features = x[0], x[1]
+        style_mean, style_variance = tf.nn.moments(style_features, [1,2], keepdims=True)
+        content_mean, content_variance = tf.nn.moments(content_features, [1,2], keepdims=True)
+        epsilon = 1e-5
+        normalized_content_features = tf.nn.batch_normalization(content_features, content_mean,
+                                                                content_variance, style_mean, 
+                                                                tf.sqrt(style_variance), epsilon)
+        normalized_content_features = self.alpha * normalized_content_features + (1 - self.alpha) * content_features
+        return normalized_content_features
+
+def parseshape(c):
+    shape=int_shape(c)[1::]
+    uints=1
+    for s in shape:
+        uints*=s
+    return uints, shape
+

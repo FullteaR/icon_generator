@@ -1,5 +1,6 @@
 input/
 faces/
+faces_up/
 output/
 \.ipynb_checkpoints/
 output.json
@@ -7,8 +8,7 @@ models/
 __pycache__/
 *.zip
 tmp-*/
-image.tar.gz
-
+output_images/
 .DS_Store
-
+*.tar.gz
 .python-version
