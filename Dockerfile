@@ -4,21 +4,17 @@ LABEL maintainer="frt frt@hongo.wide.ad.jp"
   
 ARG PYTHON_VERSION="3.6.5"
 ARG PYTHON_ROOT=/usr/local/bin/python
-#run jupyter without password
-#ARG JUPYTER_PW_HASH="sha1:xxxxxxxxxxxxxxxxxxxxxx"
 
-
-RUN apt update
-
-RUN apt install -y\
+RUN apt update && apt install -y\
  sudo\
  wget\
  git\
  curl\
  build-essential\
  ruby\
- ffmpeg
-RUN apt install -y\
+ ffmpeg\
+ imagemagick\
+ ruby-dev\
  libmagickwand-dev\
  libreadline-dev\
  libncursesw5-dev\
@@ -61,14 +57,10 @@ RUN pip install\
  timeout_decorator\
  pydot
 
-RUN pip install -U git+https://github.com/qubvel/efficientnet
-
 #INSTALL animeface 
 #Copyright (C) 2009-2016 nagadomi <nagadomi@nurs.or.jp>
 RUN git clone https://github.com/nagadomi/animeface-2009.git
-RUN apt install -y imagemagick ruby-dev
-RUN gem update
-RUN gem install rmagick parallel ruby-progressbar progress_bar
+RUN gem update && gem install rmagick parallel ruby-progressbar progress_bar
 RUN cd animeface-2009 && ./build.sh
 
 

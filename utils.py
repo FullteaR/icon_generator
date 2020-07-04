@@ -106,7 +106,6 @@ def create(generator, likelihood=0.999, size=None):
         img = cv2.bilateralFilter(img, 5, 35, 35)
         return img
     
-    
 #https://github.com/penny4860/keras-adain-style-transfer
 class AdaIN(Layer):
     def __init__(self, alpha=1.0, **kwargs):
@@ -139,10 +138,8 @@ class AdaIN(Layer):
         normalized_content_features = self.alpha * normalized_content_features + (1 - self.alpha) * content_features
         return normalized_content_features
 
+
 def parseshape(c):
     shape=int_shape(c)[1::]
-    uints=1
-    for s in shape:
-        uints*=s
-    return uints, shape
+    return shape
 

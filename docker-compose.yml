@@ -13,3 +13,17 @@ services:
                 environment:
                         - NVIDIA_VISIBLE_DEVICES=all
                         - NVIDIA_DRIVER_CAPABILITIES=all
+        trim:
+                build:
+                        context: .
+                        dockerfile: Dockerfile_trim
+                image: frt/trim
+                container_name: trim
+                ports:
+                        - 127.0.0.1:11113:8888
+                volumes:
+                        - .:/mnt
+                runtime: nvidia
+                environment:
+                        - NVIDIA_VISIBLE_DEVICES=all
+                        - NVIDIA_DRIVER_CAPABILITIES=all
