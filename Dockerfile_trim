@@ -12,3 +12,5 @@ RUN mv gdrive.sh/res101_faster_rcnn_iter_60000.zip . && unzip res101_faster_rcnn
 
 WORKDIR /anime-face-detector
 RUN make clean && make
+
+
