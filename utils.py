@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 import tensorflow as tf
-from tensorflow.keras.layers import Lambda, LeakyReLU, Conv2D, Input, Layer, Dense, Reshape, GaussianNoise, LayerNormalization, Multiply, Add
+from tensorflow.keras.layers import Lambda, LeakyReLU, Conv2D, Input, Layer, Dense, Reshape, GaussianNoise, LayerNormalization, Multiply, Add, Flatten, LeakyReLU, UpSampling2D, GlobalMaxPooling2D, BatchNormalization, MaxPooling2D, Dropout
 import tensorflow.keras.backend as K
 from tensorflow.keras.models import Sequential, Model
 from tensorflow.keras.backend import int_shape, ones
@@ -11,15 +11,9 @@ import shutil
 import subprocess
 import json
 import cv2
-from tensorflow.keras.models import Sequential, Model, load_model
-from tensorflow.keras.layers import Conv2D, MaxPooling2D, Dense, Dropout, Activation, Flatten, Input, BatchNormalization, Reshape, UpSampling2D, PReLU, ReLU, LeakyReLU, Lambda, GlobalAveragePooling2D, LayerNormalization, Multiply, Add
-from tensorflow.keras.optimizers import Adam
+
 from tensorflow.keras.initializers import RandomNormal
 from tensorflow.keras.utils import to_categorical, plot_model
-import tensorflow as tf
-
-
-from tqdm.notebook import tqdm
 from multiprocessing import Pool
 import random
 from sklearn.model_selection import train_test_split
@@ -50,7 +44,7 @@ def ResBlock(layer_input, out_channel):
 
 def visualize(g, d=None, epoch=None, row=4, col=5, save=None):
     noise_length = g.layers[0].input.shape[1]
-    plt.figure(figsize=(col * 3, row * 3))
+    fig = plt.figure(figsize=(col * 3, row * 3))
     noise = np.random.uniform(-1, 1, size=(row * col, noise_length))
     pred = g.predict(noise, verbose=0)
     if d:
@@ -69,7 +63,17 @@ def visualize(g, d=None, epoch=None, row=4, col=5, save=None):
     if save:
         plt.savefig(save)
     plt.show()
+    plt.close(fig)
     return noise
+
+def calcscore(g, d, sample=1000):
+    noise_length = g.layers[0].input.shape[1]
+    noise = np.random.uniform(-1, 1, size=(sample, noise_length))
+    pred = g.predict(noise, verbose=0)
+    scores = d.predict(pred)
+    return np.mean(scores)
+    
+    
 
 def Combined_model(g, d):
     noise_length = g.layers[0].input.shape[1]
@@ -179,12 +183,12 @@ def D_model_core(Height, Width, channel=3):
     inputs = Input((Height, Width, channel))
     x = Conv2D(64, (5, 5), padding="same", strides=(2,2))(inputs)
     x = LeakyReLU(0.2)(x)
+    x = MaxPooling2D(padding="same")(x)
     x = Conv2D(128, (5, 5), padding="same", strides=(2,2))(x)
     x = LeakyReLU(0.2)(x)
+    x = MaxPooling2D(padding="same")(x)
     x = Conv2D(256, (5, 5), padding="same", strides=(2,2))(x)
-    x = LeakyReLU(0.2)(x)
-    x = Flatten()(x)
-    x = Dropout(0.5) (x)
+    x = GlobalMaxPooling2D()(x)
     x = Dense(1024)(x)
     x = LeakyReLU(0.2)(x)
     x = Dropout(0.5)(x)
@@ -197,6 +201,31 @@ def D_model(Height, Width, channel=3, n_estimators=3):
     outputs = []
     for i in range(n_estimators):
         outputs.append(D_model_core(Height, Width, channel)(inputs))
+    model = Model(inputs=inputs, outputs=outputs, name="discriminator")
+    return model
+
+def D_model_core2(Height, Width, channel=3):
+    inputs = Input((Height, Width, channel))
+    x = Conv2D(64, (5, 5), padding="same", strides=(2,2))(inputs)
+    x = LeakyReLU(0.2)(x)
+    x = MaxPooling2D(padding="same")(x)
+    x = Conv2D(128, (5, 5), padding="same", strides=(2,2))(x)
+    x = LeakyReLU(0.2)(x)
+    x = MaxPooling2D(padding="same")(x)
+    x = Conv2D(256, (5, 5), padding="same", strides=(2,2))(x)
+    x = Flatten()(x)
+    x = Dropout(0.5)(x)
+    x = Dense(1024)(x)
+    x = LeakyReLU(0.2)(x)
+    outputs = Dense(1, activation="sigmoid")(x)
+    model = Model(inputs=inputs, outputs=outputs)
+    return model
+
+def D_model2(Height, Width, channel=3, n_estimators=3):
+    inputs = Input((Height, Width, channel))
+    outputs = []
+    for i in range(n_estimators):
+        outputs.append(D_model_core2(Height, Width, channel)(inputs))
     model = Model(inputs=inputs, outputs=outputs, name="discriminator")
     return model
 
