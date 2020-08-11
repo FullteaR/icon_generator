@@ -246,3 +246,84 @@ def read_file_wrap(dict):
     width=dict["width"]
     height=dict["height"]
     return read_file(filepath,width,height)
+
+
+class Constant(Layer):
+    def __init__(self, output_dim, trainable=True, **kwargs):
+        self.output_dim = output_dim
+        self.trainable=trainable
+        super(Constant, self).__init__(**kwargs)
+    def build(self, input_shape):
+        self.bias = self.add_weight(shape=(1, self.output_dim), initializer="uniform", trainable=self.trainable)
+    def call(self, x):
+        return self.bias
+    def compute_output_shape(self, input_shape):
+        return (input_shape[0], self.output_dim)
+    def get_config(self):
+        config = super().get_config().copy()
+        config.update({"output_dim":self.output_dim})
+        return config
+
+
+def AdaINBlock(x,z, use_bias=True):
+    x = LayerNormalization(axis=[1,2])(x)
+    shape = parseshape(x)
+    assert len(shape)==3
+    ch = shape[2]
+    ysi = Dense(ch, use_bias=use_bias)(z)
+    ysi = GaussianNoise(0.5)(ysi)
+    ysi = Reshape((1,1,ch))(ysi)
+    ysi = Lambda(K.tile, arguments={'n':(1,shape[0],shape[1],1)})(ysi)
+    ybi = Dense(ch, use_bias=use_bias)(z)
+    ybi = GaussianNoise(0.5)(ybi)
+    ybi = Reshape((1,1,ch))(ybi)
+    ybi = Lambda(K.tile, arguments={'n':(1,shape[0],shape[1],1)})(ybi)
+    x = Multiply()([x,ysi])
+    x = Add()([x,ybi])
+    return x
+
+
+
+
+#https://github.com/keras-team/keras-contrib/blob/master/examples/improved_wgan.py
+def wasserstein_loss(y_true, y_pred):
+    """Calculates the Wasserstein loss for a sample batch.
+    The Wasserstein loss function is very simple to calculate. In a standard GAN, the
+    discriminator has a sigmoid output, representing the probability that samples are
+    real or generated. In Wasserstein GANs, however, the output is linear with no
+    activation function! Instead of being constrained to [0, 1], the discriminator wants
+    to make the distance between its output for real and generated samples as
+    large as possible.
+    The most natural way to achieve this is to label generated samples -1 and real
+    samples 1, instead of the 0 and 1 used in normal GANs, so that multiplying the
+    outputs by the labels will give you the loss immediately.
+    Note that the nature of this loss means that it can be (and frequently will be)
+    less than 0."""
+    return K.mean(y_true * y_pred)
+
+
+#https://gist.github.com/a-re/8ac20f2abd00be917d18eab7b76dde96
+class MinibatchStd(Layer):
+    # initialize the layer
+    def __init__(self, **kwargs):
+        super(MinibatchStd, self).__init__(**kwargs)
+
+    # perform the operation
+    def call(self, inputs, **kwargs):
+        # calculate the mean value for each pixel across channels
+        mean = tf.reduce_mean(inputs, axis=0, keepdims=True)
+        # calculate the average of the squared differences (variance) and add a small constant for numerical stability
+        variance = tf.reduce_mean(tf.square(inputs - mean), axis=0, keepdims=True) + 1e-8
+        # calculate the mean standard deviation across each pixel coord. stddev = sqrt of variance
+        average_stddev = tf.reduce_mean(tf.sqrt(variance), keepdims=True)
+        # Scale this up to be the size of one input feature map for each sample
+        shape = tf.shape(inputs)
+        minibatch_stddev = tf.tile(average_stddev, (shape[0], shape[1], shape[2], 1))
+        # concatenate minibatch std feature map with the input feature maps (axis=-1 if data_format=NHWC)
+        return tf.concat([inputs, minibatch_stddev], axis=-1)
+
+    # define the output shape of the layer
+    def compute_output_shape(self, input_shape):
+        input_shape = list(input_shape)
+        input_shape[-1] += 1  # batch-wide std adds one additional channel
+        return tuple(input_shape)
