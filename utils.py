@@ -169,10 +169,10 @@ def AdaINBlock(x,z):
     shape = parseshape(x)
     assert len(shape)==3
     ch = shape[2]
-    ysi = Dense(ch)(z)
+    ysi = Dense(ch, name="adain_ysi")(z)
     ysi = Reshape((1,1,ch))(ysi)
     ysi = Lambda(K.tile, arguments={'n':(1,shape[0],shape[1],1)})(ysi)
-    ybi = Dense(ch)(z)
+    ybi = Dense(ch, name="adain_ybi")(z)
     ybi = Reshape((1,1,ch))(ybi)
     ybi = Lambda(K.tile, arguments={'n':(1,shape[0],shape[1],1)})(ybi)
     x = Multiply()([x,ysi])
