@@ -3,11 +3,10 @@ This is an automated animator for drawing anime/manga face using stylegan2.
 
 ## Generated Images
 
-![generated_images]
-(https://github.com/FullteaOfEEIC/icon_generator/sample_images/sample1.png)
-(https://github.com/FullteaOfEEIC/icon_generator/sample_images/sample2.png)
-(https://github.com/FullteaOfEEIC/icon_generator/sample_images/sample3.png)
-(https://github.com/FullteaOfEEIC/icon_generator/sample_images/sample4.png)
+![sample1](https://github.com/FullteaOfEEIC/icon_generator/blob/master/sample_images/sample1.png)
+![sample2](https://github.com/FullteaOfEEIC/icon_generator/blob/master/sample_images/sample2.png)
+![sample3](https://github.com/FullteaOfEEIC/icon_generator/blob/master/sample_images/sample3.png)
+![sample4](https://github.com/FullteaOfEEIC/icon_generator/blob/master/sample_images/sample4.png)
 
 ## Installation and Usage
 
