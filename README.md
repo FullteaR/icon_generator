@@ -1,9 +1,13 @@
 # icon_generator
-This is an automated animator for drawing anime/manga face.
+This is an automated animator for drawing anime/manga face using stylegan2.
 
 ## Generated Images
 
-![generated_images](https://github.com/FullteaOfEEIC/icon_generator/blob/master/sample.png)
+![generated_images]
+(https://github.com/FullteaOfEEIC/icon_generator/sample_images/sample1.png)
+(https://github.com/FullteaOfEEIC/icon_generator/sample_images/sample2.png)
+(https://github.com/FullteaOfEEIC/icon_generator/sample_images/sample3.png)
+(https://github.com/FullteaOfEEIC/icon_generator/sample_images/sample4.png)
 
 ## Installation and Usage
 
@@ -14,22 +18,23 @@ This is an automated animator for drawing anime/manga face.
 
 ### Steps
 
-#### 1. Clone this repository
+#### Clone this repository
 ```
 git clone https://github.com/FullteaOfEEIC/icon_generator.git
 ```
 
-#### 2. Use docker-compose
+#### Save Images
+Save image files to ```input```. (Datasets and scripts for collecting datasets are not included.)
+
+#### Use docker-compose
 ```
 docker-compose up -d
 ```
+This will automatically detect faces from images and save infos to ```output/output.json```.
 
-#### 3. Access jupyter
+#### Access jupyter
 
-open your web browser and access http://localhost:11112/notebooks/mnt
+Open your web browser and access http://localhost:11112/notebooks.
+With running trim.ipynb, trimed images are saved to ```faces```.
 
 (you can specify another port by editing ```docker-compose.yml```)
-
-#### 4. Run Codes
-
-open ```sample.ipynb``` and run it.
