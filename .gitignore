@@ -13,3 +13,6 @@ output_images/
 .DS_Store
 *.tar.gz
 .python-version
+.pkl
+.json
+
