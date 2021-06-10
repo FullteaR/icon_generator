@@ -1,28 +1,44 @@
 version: '2.3'
 services:
-        icon:
+        trim:
+               build:
+                       context: .
+                       dockerfile: ./trim/Dockerfile
+               image: frt/trim
+               container_name: trim
+               ports:
+                       - 127.0.0.1:11112:8888
+               volumes:
+                       - ./input:/input
+                       - ./output:/output
+                       - ./faces:/faces
+        crip:
                 build:
-                        context: ./
-                image: frt/icon
-                container_name: icon
-                ports:
-                        - 127.0.0.1:11112:8888
-                volumes:  
-                        - .:/mnt
+                        context: .
+                        dockerfile: ./crip/Dockerfile
+                image: frt/crip
+                container_name: crip
+                volumes:
+                        - ./output:/output
+                        - ./input:/input
                 runtime: nvidia
                 environment:
                         - NVIDIA_VISIBLE_DEVICES=all
                         - NVIDIA_DRIVER_CAPABILITIES=all
-        trim:
+
+        
+        style:
                 build:
                         context: .
-                        dockerfile: Dockerfile_trim
-                image: frt/trim
-                container_name: trim
-                ports:
-                        - 127.0.0.1:11113:8888
+                        dockerfile: ./style/Dockerfile
+                image: frt/style
+                container_name: style
+                tty: true
                 volumes:
-                        - .:/mnt
+                        - ./faces:/faces
+                        - ./datasets:/datasets
+                        - ./results:/results
+
                 runtime: nvidia
                 environment:
                         - NVIDIA_VISIBLE_DEVICES=all
