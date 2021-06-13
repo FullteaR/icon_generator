@@ -37,3 +37,17 @@ Open your web browser and access http://localhost:11112/notebooks.
 With running trim.ipynb, trimed images are saved to ```faces```.
 
 (you can specify another port by editing ```docker-compose.yml```)
+
+#### Run stylegan2
+
+##### convert image 
+Convert images from image file to tf-records.
+The following script creates tf-records to ```datasets``` folder from images saved in ```faces```
+```
+docker exec -it style python /stylegan2/dataset_tool.py create_from_images /datasets /faces
+```
+##### training
+```
+docker exec -d style python /stylegan2/run_training.py --num-gpus=1 --data-dir=/ --config=config-f --dataset=datasets --mirror-augment=True
+```
+for more details about options, please see https://github.com/NVlabs/stylegan2
