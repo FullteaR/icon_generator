@@ -1,15 +1,11 @@
 input/
 faces/
-faces_middle/
-faces_up/
+datasets/
 output/
 \.ipynb_checkpoints/
-output.json
 models/
 __pycache__/
 *.zip
-tmp-*/
-output_images/
 .DS_Store
 *.tar.gz
 .python-version
