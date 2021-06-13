@@ -4,7 +4,7 @@ services:
                build:
                        context: .
                        dockerfile: ./trim/Dockerfile
-               image: frt/trim
+               image: icon/trim
                container_name: trim
                ports:
                        - 127.0.0.1:11112:8888
@@ -12,11 +12,12 @@ services:
                        - ./input:/input
                        - ./output:/output
                        - ./faces:/faces
+
         crip:
                 build:
                         context: .
                         dockerfile: ./crip/Dockerfile
-                image: frt/crip
+                image: icon/crip
                 container_name: crip
                 volumes:
                         - ./output:/output
@@ -25,13 +26,12 @@ services:
                 environment:
                         - NVIDIA_VISIBLE_DEVICES=all
                         - NVIDIA_DRIVER_CAPABILITIES=all
-
         
         style:
                 build:
                         context: .
                         dockerfile: ./style/Dockerfile
-                image: frt/style
+                image: icon/style
                 container_name: style
                 tty: true
                 volumes:
