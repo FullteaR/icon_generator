@@ -2,6 +2,7 @@ input/
 faces/
 datasets/
 output/
+results/
 \.ipynb_checkpoints/
 models/
 __pycache__/
