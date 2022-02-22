@@ -44,10 +44,10 @@ With running trim.ipynb, trimed images are saved to ```faces```.
 Convert images from image file to tf-records.
 The following script creates tf-records to ```datasets``` folder from images saved in ```faces```
 ```
-docker exec -it style python /stylegan2/dataset_tool.py create_from_images /datasets /faces
+docker exec -it style python dataset_tool.py --source=/faces --dest=/datasets/faces.zip
 ```
 ##### training
 ```
-docker exec -d style python /stylegan2/run_training.py --num-gpus=1 --data-dir=/ --config=config-f --dataset=datasets --mirror-augment=True
+docker exec -d style python train.py --outdir=/results --cfg=stylegan3-t --data=/datasets/faces.zip --gpus=2 --batch=32 --gamma=8.2 --mirror=1
 ```
-for more details about options, please see https://github.com/NVlabs/stylegan2
+for more details about options, please see https://github.com/NVlabs/stylegan3
