@@ -40,6 +40,7 @@ services:
                         - ./results:/results
 
                 runtime: nvidia
+                shm_size: '64gb'
                 environment:
                         - NVIDIA_VISIBLE_DEVICES=all
                         - NVIDIA_DRIVER_CAPABILITIES=all

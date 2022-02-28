@@ -9,7 +9,8 @@ RUN pip install\
  opencv-python\
  tqdm\
  timeout_decorator\
- jupyter
+ jupyter\
+ matplotlib
 
 RUN mkdir /root/.jupyter
 RUN echo "c.NotebookApp.ip = '0.0.0.0'" >> /root/.jupyter/jupyter_notebook_config.py
