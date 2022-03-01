@@ -16,7 +16,7 @@ RUN mkdir /root/.jupyter
 RUN echo "c.NotebookApp.ip = '0.0.0.0'" >> /root/.jupyter/jupyter_notebook_config.py
 RUN echo c.NotebookApp.open_browser = False >> /root/.jupyter/jupyter_notebook_config.py
 
-COPY trim/trim.ipynb /root/
+COPY trim/*.ipynb /root/
 WORKDIR /root
 CMD jupyter notebook --allow-root --NotebookApp.token=''
 
