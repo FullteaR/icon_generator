@@ -3,7 +3,7 @@ services:
         trim:
                build:
                        context: .
-                       dockerfile: ./trim/Dockerfile
+                       dockerfile: ./src/trim/Dockerfile
                image: icon/trim
                container_name: trim
                ports:
@@ -16,7 +16,7 @@ services:
         crip:
                 build:
                         context: .
-                        dockerfile: ./crip/Dockerfile
+                        dockerfile: ./src/crip/Dockerfile
                 image: icon/crip
                 container_name: crip
                 volumes:
@@ -30,7 +30,7 @@ services:
         style:
                 build:
                         context: .
-                        dockerfile: ./style/Dockerfile
+                        dockerfile: ./src/style/Dockerfile
                 image: icon/style
                 container_name: style
                 tty: true

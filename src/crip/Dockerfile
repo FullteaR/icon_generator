@@ -1,4 +1,4 @@
-FROM tensorflow/tensorflow:1.15.2-gpu-py3
+FROM tensorflow/tensorflow:2.7.1-gpu
 
 RUN pip install --upgrade pip setuptools Cython opencv-python
 
