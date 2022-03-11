@@ -1,5 +1,5 @@
 # icon_generator
-This is an automated animator for drawing anime/manga face using stylegan2.
+This is an automated animator for drawing anime/manga face using stylegan3.
 
 ## Generated Images
 
@@ -38,7 +38,7 @@ With running trim.ipynb, trimed images are saved to ```faces```.
 
 (you can specify another port by editing ```docker-compose.yml```)
 
-#### Run stylegan2
+#### Run stylegan3
 
 ##### convert image 
 Convert images from image file to tf-records.
@@ -48,6 +48,6 @@ docker exec -it style python dataset_tool.py --source=/faces --dest=/datasets/fa
 ```
 ##### training
 ```
-docker exec -d style python train.py --outdir=/results --cfg=stylegan3-t --data=/datasets/faces.zip --gpus=2 --batch=32 --gamma=8.2 --mirror=1
+docker exec -it style python train.py --outdir=/results --cfg=stylegan3-t --data=/datasets/faces.zip --gpus=2 --batch=16 --gamma=8.2 --mirror=1
 ```
 for more details about options, please see https://github.com/NVlabs/stylegan3
