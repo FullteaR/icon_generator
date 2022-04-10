@@ -1,4 +1,4 @@
-FROM python:3.9.2
+FROM python:3.10.3
 
 LABEL maintainer="frt frt@hongo.wide.ad.jp"
 

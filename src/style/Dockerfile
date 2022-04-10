@@ -1,4 +1,4 @@
-FROM pytorch/pytorch:1.9.1-cuda11.1-cudnn8-devel
+FROM pytorch/pytorch:1.9.1-cuda11.1-cudnn8-runtime
 
 ENV PYTORCH_CUDA_ALLOC_CONF max_split_size_mb:100
 
