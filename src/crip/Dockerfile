@@ -4,6 +4,9 @@ ENV RES101_ZIP_FILE_ID 1WjBgfOUqp4sdRd9BHs4TkdH2EcBtV5ri
 
 RUN pip install --upgrade pip setuptools Cython opencv-python
 
+RUN apt-key del 7fa2af80
+RUN apt-key adv --fetch-keys http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1604/x86_64/3bf863cc.pub
+
 WORKDIR /
 RUN apt update && apt install -y git wget perl build-essential libgl1-mesa-glx curl unzip libopencv-dev
 RUN git clone https://github.com/FullteaR/anime-face-detector.git --depth=1
