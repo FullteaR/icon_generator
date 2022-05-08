@@ -2,6 +2,7 @@ import uuid
 import random
 from timeout_decorator import timeout, TimeoutError
 import cv2
+import numpy as np
 
 
 def cross(left, up, right, down, _min_x, _min_y, _max_x, _max_y):
@@ -64,7 +65,19 @@ def create_box(values, size, shape):
                 break
         result.append((up,down,left,right))
     return result
-    
+
+
+def gen_angle():
+    return random.uniform(-10,10)
+
+
+def check_angle(img, angle, center, up, down, left, right):
+    scale = 1.0
+    trans = cv2.getRotationMatrix2D(center, angle, scale)
+    ones = np.zeros_like(img)+1
+    ones = cv2.warpAffine(ones, trans, (ones.shape[1], ones.shape[0]))[up:down, left:right]
+    return np.sum(ones==0)==0
+
 
 @timeout(600)
 def _trim(item, bright=False):
@@ -81,8 +94,18 @@ def _trim(item, bright=False):
         v = clahe.apply(v)
         hsv = cv2.merge((h,s,v))
         img = cv2.cvtColor(hsv, cv2.COLOR_HSV2BGR)
+    scale = 1.0
     for up, down, left, right in create_box(values, size, img.shape):
-        img_trim = img.copy()[up:down, left:right]
+        center = ((left+right)//2, (up+down)//2)
+        for i in range(100):
+            angle = gen_angle()
+            if check_angle(img, angle, center, up, down, left, right):
+                break
+        else:
+            angle = 0
+        trans = cv2.getRotationMatrix2D(center, angle, scale)
+        img_trim = cv2.warpAffine(img.copy(), trans, (img.shape[1], img.shape[0]))
+        img_trim = img_trim[up:down, left:right]
         img_trim = cv2.resize(img_trim, (size, size))
         if bright:
             save_path = "/faces/bright/{0}-{1}.jpg".format(str(uuid.uuid4()), str(uuid.uuid4()))
