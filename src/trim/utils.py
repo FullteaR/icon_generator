@@ -52,6 +52,8 @@ def create_box(values, size, shape):
             assert max_y <= down and down <= shape[0]
             assert 0 <= up and up <= min_y
             
+            if len(values)==1:
+                break
             for value in values:
                 if bbox == value["bbox"]:
                     continue
@@ -65,21 +67,39 @@ def create_box(values, size, shape):
     
 
 @timeout(600)
-def _trim(item):
-    size = 512
+def _trim(item, bright=False):
+    size = 256
     key, values = item
     img = cv2.imread(key)
     if img is None:
         print("error loading", key)
         return
+    if bright:
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+        h,s,v = cv2.split(img)
+        clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(3, 3))
+        v = clahe.apply(v)
+        hsv = cv2.merge((h,s,v))
+        img = cv2.cvtColor(hsv, cv2.COLOR_HSV2BGR)
     for up, down, left, right in create_box(values, size, img.shape):
         img_trim = img.copy()[up:down, left:right]
         img_trim = cv2.resize(img_trim, (size, size))
-        cv2.imwrite("/faces/normal/{0}-{1}.jpg".format(str(uuid.uuid4()), str(uuid.uuid4())), img_trim)
+        if bright:
+            save_path = "/faces/bright/{0}-{1}.jpg".format(str(uuid.uuid4()), str(uuid.uuid4()))
+        else:
+            save_path = "/faces/normal/{0}-{1}.jpg".format(str(uuid.uuid4()), str(uuid.uuid4()))
+        cv2.imwrite(save_path, img_trim)
 
 
 def trim(item):
     try:
-        _trim(item)
+        _trim(item, bright=False)
+    except TimeoutError:
+        pass
+
+
+def brighttrim(item):
+    try:
+        _trim(item, bright=True)
     except TimeoutError:
         pass
