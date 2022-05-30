@@ -3,10 +3,12 @@ This is an automated animator for drawing anime/manga face using stylegan3.
 
 ## Generated Images
 
-![sample1](https://github.com/FullteaOfEEIC/icon_generator/blob/master/sample_images/sample1.png)
-![sample2](https://github.com/FullteaOfEEIC/icon_generator/blob/master/sample_images/sample2.png)
-![sample3](https://github.com/FullteaOfEEIC/icon_generator/blob/master/sample_images/sample3.png)
-![sample4](https://github.com/FullteaOfEEIC/icon_generator/blob/master/sample_images/sample4.png)
+![sample1](https://github.com/FullteaR/icon_generator/blob/master/sample_images/sample1.png)
+![sample2](https://github.com/FullteaR/icon_generator/blob/master/sample_images/sample2.png)
+![sample3](https://github.com/FullteaR/icon_generator/blob/master/sample_images/sample3.png)
+![sample4](https://github.com/FullteaR/icon_generator/blob/master/sample_images/sample4.png)
+![sample5](https://github.com/FullteaR/icon_generator/blob/master/sample_images/sample5.png)
+![sample6](https://github.com/FullteaR/icon_generator/blob/master/sample_images/sample6.png)
 
 ## Installation and Usage
 
@@ -19,7 +21,7 @@ This is an automated animator for drawing anime/manga face using stylegan3.
 
 #### Clone this repository
 ```
-git clone https://github.com/FullteaOfEEIC/icon_generator.git
+git clone https://github.com/FullteaR/icon_generator.git
 ```
 
 #### Save Images
