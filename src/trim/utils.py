@@ -108,9 +108,19 @@ def _trim(item, bright=False):
         img_trim = img_trim[up:down, left:right]
         img_trim = cv2.resize(img_trim, (size, size))
         if bright:
-            save_path = "/faces/bright/{0}-{1}.jpg".format(str(uuid.uuid4()), str(uuid.uuid4()))
+            if "anime" in key:
+                save_path = "/faces/bright_anim/{0}-{1}.jpg".format(str(uuid.uuid4()), str(uuid.uuid4()))
+            elif "eva" in key:
+                save_path = "/faces/bright_eva/{0}-{1}.jpg".format(str(uuid.uuid4()), str(uuid.uuid4()))
+            else:
+                save_path = "/faces/bright/{0}-{1}.jpg".format(str(uuid.uuid4()), str(uuid.uuid4()))
         else:
-            save_path = "/faces/normal/{0}-{1}.jpg".format(str(uuid.uuid4()), str(uuid.uuid4()))
+            if "anime" in key:
+                save_path = "/faces/normal_anim/{0}-{1}.jpg".format(str(uuid.uuid4()), str(uuid.uuid4()))
+            elif "eva" in key:
+                save_path = "/faces/normal_eva/{0}-{1}.jpg".format(str(uuid.uuid4()), str(uuid.uuid4()))
+            else:
+                save_path = "/faces/normal/{0}-{1}.jpg".format(str(uuid.uuid4()), str(uuid.uuid4()))
         cv2.imwrite(save_path, img_trim)
 
 
@@ -122,6 +132,9 @@ def trim(item):
 
 
 def brighttrim(item):
+    key, value=item
+    if "anime" in key:
+        return
     try:
         _trim(item, bright=True)
     except TimeoutError:
